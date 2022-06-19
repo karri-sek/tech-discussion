@@ -7,7 +7,6 @@ export const validationSchema = (productNames: string[]) => {
       .min(2, "*ProductName must have at least 2 characters")
       .max(100, "*ProductName can't be longer than 100 characters")
       .test('duplicateName', '', function(value){
-        console.log('here ', value,productNames)
         if(value && productNames.includes(value.toLowerCase())){
           return this.createError({message: 'product name should be unique'})
         }
@@ -15,8 +14,10 @@ export const validationSchema = (productNames: string[]) => {
       })
       .required("*ProductName is required"),
     customerPrice: yup.number()
-      .required("*CustomerPrice is required"),
+      .required("*CustomerPrice is required")
+      .moreThan(0, 'CustomerPrice should not be zero or less than zero'),
     cost: yup.number()
-      .required("*Cost is required"),
+      .required("*Cost is required")
+      .moreThan(0, 'Cost should not be zero or less than zero')
   })
 };

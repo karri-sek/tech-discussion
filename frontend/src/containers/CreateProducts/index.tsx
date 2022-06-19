@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { validationSchema } from './validationSchema';
@@ -13,21 +14,29 @@ import { IProductDomain } from '../../store/modules/product/model';
 
 export const CreateProducts = () => {
     const products: IProductDomain[] = useSelector(productsSelector);
+    const [newProduct, setNewProduct] = useState<IProductDomain>();
     const productNames = products.map((product: IProductDomain) => product.name.toLowerCase());
     const formik = useFormik({
         initialValues: {
             name: '',
-            customerPrice:0.0,
-            cost:0.0
+            customerPrice: 0.0,
+            cost: 0.0
         },
         validationSchema: validationSchema(productNames),
-        onSubmit: (values: ICreateProduct) => {
-            submitProduct(values);
+        onSubmit: async (values: ICreateProduct) => {
+            const data = await submitProduct(values);
+            setNewProduct(data);
+            setTimeout(() => {
+                setNewProduct(undefined)
+            }, 2000);
         },
     });
     return (
         <CreateProductStyles>
             <Form onSubmit={formik.handleSubmit}>
+                {newProduct && <Alert key={'success'} variant={'success'}>
+                    product {newProduct.name} created successfully
+                </Alert>}
                 <Form.Group className="mb-3">
                     <Form.Label>Product Name</Form.Label>
                     <Form.Control id="name" type="text" name='name' onChange={formik.handleChange} value={formik.values.name} onBlur={formik.handleBlur} placeholder="Enter product name" className={formik.touched.name && formik.errors.name ? "error" : undefined} />

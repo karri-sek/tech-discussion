@@ -13,10 +13,8 @@ export const submitProduct = (payload: ICreateProduct) => {
     body: raw,
   };
 
-  fetch(PRODUCTS_URL, requestOptions)
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
+  return fetch(PRODUCTS_URL, requestOptions)
+    .then(response => {return response.json()})
 }
 
 export const getProducts = async () => {
