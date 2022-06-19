@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Product actions Add to cart action 1`] = `
+Object {
+  "product": undefined,
+  "type": "ADD_TO_CART_REQUEST",
+}
+`;
